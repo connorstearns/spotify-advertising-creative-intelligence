@@ -51,8 +51,12 @@ with st.sidebar:
     st.markdown(
         """
         <div class="eyebrow">Pitch sample</div>
-        <h2 style="margin-top:.35rem">Creative Intelligence</h2>
-        <p style="color:#1DB954;font-size:.82rem;margin-top:-.4rem">Creative diagnostics + production planning</p>
+        <h2 style="margin-top:.35rem; color:#F4F7F5;">
+            Creative <span style="color:#1DB954;">Intelligence</span>
+        </h2>
+        <p style="color:#1DB954;font-size:.82rem;margin-top:-.4rem">
+            Creative diagnostics + production planning
+        </p>
         """,
         unsafe_allow_html=True,
     )
