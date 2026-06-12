@@ -1,0 +1,13 @@
+creative_territory,format,creative_role,channel,primary_signal,current_value,prior_value,value_format,lower_is_better,recommendation
+Drop Into The Moment,Breaking Drop,Problem Framing,Meta,Hook rate,0.340,0.300,percent,false,Scale the timely hook and version it for the next fandom moment
+Drop Into The Moment,Drop-ins of the Week,Problem Framing,Reddit,Saves / shares,780,720,number,false,Keep the recurring format and test a more native discussion prompt
+Drop Into The Moment,Drop the Mic in 60 Seconds,Solution Education,YouTube,Video completion rate,0.510,0.470,percent,false,Build a shorter cutdown around the strongest explanatory beat
+Drop Into The Moment,Industry Drops,Solution Education,LinkedIn,Engaged visits,4600,4200,number,false,Version the industry example for priority buyer segments
+Don’t Just Play — Perform,"Play Hard, Perform Hard",Problem Framing,Meta,CTR,0.0112,0.0105,percent,false,Keep the artistry-led hook and rotate visual openings
+Don’t Just Play — Perform,Star Performers,Proof & Credibility,LinkedIn,Warm-audience response,0.126,0.119,percent,false,Add a stronger quote or case example for warm audiences
+Don’t Just Play — Perform,Play with Creative. Perform with Numbers.,Solution Education,YouTube,Video completion rate,0.460,0.480,percent,false,Simplify the explanation and surface the Spotify Ads benefit earlier
+Don’t Just Play — Perform,Performance Proof Card,Proof & Credibility,Display,Benchmark engagement,0.061,0.067,percent,false,Test a stronger benchmark and a more distinctive proof point
+Both selected territories,CTA / Lead Gen Variant,Action / Conversion,LinkedIn,Lead-gen completion rate,0.650,0.690,percent,false,Reduce lead-gen friction and align the CTA to the destination
+Both selected territories,Case Study Card,Proof & Credibility,LinkedIn,CTR,0.0096,0.0094,percent,false,Scale the case structure and version the proof by buyer segment
+Both selected territories,Stat Animation,Proof & Credibility,Meta,CTR,0.0081,0.0087,percent,false,Pair the statistic with a stronger creative excellence hook
+Both selected territories,Event / Content Promotion,Action / Conversion,LinkedIn,Cost per qualified lead,118,126,currency,true,Maintain the offer and test a clearer next-step message

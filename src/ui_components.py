@@ -186,7 +186,7 @@ def render_role_header(
     )
 
 
-def render_role_diagnosis(recommendation: str, tone: str) -> None:
+def render_role_diagnosis(diagnosis: str, recommendation: str, tone: str) -> None:
     accent = {
         "positive": PRIMARY_GREEN,
         "warning": WARNING,
@@ -196,8 +196,52 @@ def render_role_diagnosis(recommendation: str, tone: str) -> None:
     st.markdown(
         f"""
         <div class="role-diagnosis" style="--accent:{accent}">
-          <span class="card-label">Recommended action</span>
-          <span class="role-diagnosis-copy">{recommendation}</span>
+          <div class="role-diagnosis-item">
+            <span class="card-label">Diagnosis</span>
+            <span class="role-diagnosis-copy">{diagnosis}</span>
+          </div>
+          <div class="role-diagnosis-item">
+            <span class="card-label">Recommended action</span>
+            <span class="role-diagnosis-copy">{recommendation}</span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_diagnostic_card(
+    title: str,
+    eyebrow: str,
+    fields: list[tuple[str, str]],
+    recommendation: str,
+    status: str = "Stable",
+    tone: str = "neutral",
+) -> None:
+    field_html = "".join(
+        f"""
+        <div class="diagnostic-field">
+          <div class="diagnostic-label">{label}</div>
+          <div class="diagnostic-value">{value}</div>
+        </div>
+        """
+        for label, value in fields
+    )
+    st.markdown(
+        f"""
+        <div class="diagnostic-card">
+          <div class="diagnostic-card-top">
+            <div>
+              <div class="card-label">{eyebrow}</div>
+              <div class="diagnostic-title">{title}</div>
+            </div>
+            <div>{render_status_chip(status, tone)}</div>
+          </div>
+          <div class="diagnostic-grid">{field_html}</div>
+          <div class="diagnostic-action">
+            <span class="card-label">Next move</span>
+            <span>{recommendation}</span>
+          </div>
         </div>
         """,
         unsafe_allow_html=True,

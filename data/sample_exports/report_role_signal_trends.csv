@@ -1,0 +1,13 @@
+role,signal,signal_label,current_value,prior_value,value_format,lower_is_better,trend_values
+Problem Framing,hook_rate,Hook rate,0.320,0.290,percent,false,0.27|0.28|0.29|0.30|0.31|0.32
+Problem Framing,saves_shares,Saves / shares,1280,1140,number,false,1040|1090|1110|1180|1220|1280
+Problem Framing,ctr,CTR,0.0114,0.0107,percent,false,0.0101|0.0104|0.0107|0.0109|0.0111|0.0114
+Solution Education,engaged_visits,Engaged visits,18400,17100,number,false,16200|16800|17100|17400|17900|18400
+Solution Education,video_completion_rate,Video completion rate,0.480,0.450,percent,false,0.43|0.44|0.45|0.46|0.47|0.48
+Solution Education,ctr,CTR,0.0106,0.0102,percent,false,0.0098|0.0100|0.0102|0.0101|0.0104|0.0106
+Proof & Credibility,ctr,CTR,0.0091,0.0094,percent,false,0.0098|0.0096|0.0094|0.0093|0.0092|0.0091
+Proof & Credibility,benchmark_engagement,Benchmark engagement,0.064,0.068,percent,false,0.071|0.070|0.068|0.067|0.065|0.064
+Proof & Credibility,warm_audience_response,Warm-audience response,0.115,0.118,percent,false,0.121|0.120|0.118|0.117|0.116|0.115
+Action / Conversion,cvr,CVR,0.047,0.051,percent,false,0.053|0.052|0.051|0.050|0.048|0.047
+Action / Conversion,cost_per_qualified_lead,Cost per qualified lead,142,128,currency,true,124|126|128|132|137|142
+Action / Conversion,lead_gen_completion_rate,Lead-gen completion rate,0.630,0.680,percent,false,0.70|0.69|0.68|0.67|0.65|0.63

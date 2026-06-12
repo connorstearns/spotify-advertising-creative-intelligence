@@ -1,8 +1,8 @@
 # Spotify Advertising Paid Creative Intelligence
 
-A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence pitch. It is a creative diagnostics and production-planning tool that translates paid media signals into decisions about creative territories, creative roles, formats, channels, fatigue, and next tests.
+A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence pitch. It is a creative diagnostics and production-planning tool that translates paid media signals into decisions about creative roles, territories, formats, channels, trends, fatigue, and next tests.
 
-This sample complements media agency reporting; it does not replace it. The app reads from a structured Google Sheet when credentials are configured and falls back to matching CSV files in `data/sample_exports/`. Source identifiers and connector details are never shown in the UI.
+This sample complements media agency reporting; it does not replace it. The app reads named tabs from a structured Google Sheet when credentials are configured and falls back to matching CSV files in `data/sample_exports/`. Source identifiers and connector details are never shown in the UI.
 
 The illustrative taxonomy uses only the selected WIP creative territories **Drop Into The Moment** and **Don’t Just Play — Perform**. Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
 
@@ -34,11 +34,10 @@ Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing t
 ## What it covers
 
 - Creative Role Performance with current-vs-prior role-specific KPI trends
-- Secondary executive overview scorecard
-- Portfolio balance by creative role and creative territory
-- Creative territory, role, format, and channel diagnostics
-- Fatigue watchlist
-- Next-test recommendations and a creative decision log
+- Compact diagnostics for the two selected creative territories
+- Format and channel fit tied to territory, role, and primary signal
+- Role-specific fatigue and recommended refresh type
+- Production recommendations and an optional creative decision log
 - Data requirements and asset-mapping QA
 
 ## Caveats
@@ -47,6 +46,7 @@ Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing t
 - Low-volume signals are directional.
 - The dashboard does not prove incrementality.
 - Conversion quality depends on the available media and CRM data.
+- Real production use requires approved data access, source governance, and appropriate authentication.
 
 ## Tests
 

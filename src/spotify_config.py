@@ -7,16 +7,20 @@ SAMPLE_DIR = Path(__file__).resolve().parents[1] / "data" / "sample_exports"
 TABS = [
     "pitch_demo_summary",
     "controls",
+    "taxonomy_creative_territories",
     "taxonomy_message_territories",
     "taxonomy_creative_roles",
     "taxonomy_formats",
     "asset_taxonomy_map",
     "raw_paid_media_daily",
     "model_creative_daily",
+    "model_role_signal_trends",
+    "report_role_signal_trends",
     "report_scorecard",
     "report_role_mix",
     "report_role_performance",
     "report_territory_analysis",
+    "report_format_channel_fit",
     "report_format_analysis",
     "report_fatigue_watchlist",
     "report_next_tests",
@@ -42,6 +46,8 @@ NUMERIC_COLUMNS = {
     "unmapped_asset_count",
     "current_value",
     "prior_value",
+    "percent_change",
+    "frequency",
 }
 
 REQUIRED_ROLES = [

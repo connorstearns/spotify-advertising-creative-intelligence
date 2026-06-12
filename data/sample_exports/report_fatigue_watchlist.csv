@@ -1,6 +1,6 @@
-asset_id,asset_name,channel,territory,role,format,spend,avg_frequency,clicks,impressions,ctr
-SPOT-VID-014,Breaking Drop — Festival Fandom,Meta,Drop Into The Moment,Problem Framing,Breaking Drop,18400,4.2,8900,1180000,0.0075
-SPOT-LI-022,Star Performers — B2B Outcomes,LinkedIn,Don’t Just Play — Perform,Proof & Credibility,Star Performers,22600,3.7,7200,1020000,0.0071
-SPOT-YT-008,Play with Creative. Perform with Numbers. — Brand Lead,YouTube,Don’t Just Play — Perform,Solution Education,Play with Creative. Perform with Numbers.,15100,2.4,9100,850000,0.0107
-SPOT-RED-005,Drop-ins of the Week — Tech Culture,Reddit,Drop Into The Moment,Problem Framing,Drop-ins of the Week,7800,3.3,5900,510000,0.0116
-SPOT-DSP-019,CTA Variant — Media Decision Maker,Display,Don’t Just Play — Perform,Action / Conversion,CTA / Lead Gen Variant,12100,5.1,3900,720000,0.0054
+asset_id,asset_name,creative_territory,creative_role,format,channel,signal_declining,current_value,prior_value,value_format,lower_is_better,frequency,recommended_refresh_type,recommended_action
+SPOT-VID-014,Breaking Drop — Festival Fandom,Drop Into The Moment,Problem Framing,Breaking Drop,Meta,Hook rate,0.245,0.310,percent,false,4.2,Hook,Refresh the opening around a newer fandom or industry moment
+SPOT-LI-022,Star Performers — B2B Outcomes,Don’t Just Play — Perform,Proof & Credibility,Star Performers,LinkedIn,Warm-audience response,0.098,0.121,percent,false,3.7,Proof Point,Test a stronger benchmark quote or case example
+SPOT-YT-008,Play with Creative — Brand Lead,Don’t Just Play — Perform,Solution Education,Play with Creative. Perform with Numbers.,YouTube,Video completion rate,0.410,0.480,percent,false,2.4,Edit,Simplify the explanation and move the Spotify Ads benefit earlier
+SPOT-RED-005,Drop-ins of the Week — Tech Culture,Drop Into The Moment,Problem Framing,Drop-ins of the Week,Reddit,Saves / shares,540,710,number,false,3.3,Audience Variant,Version the native POV for a more relevant buyer community
+SPOT-DSP-019,CTA Variant — Media Decision Maker,Don’t Just Play — Perform,Action / Conversion,CTA / Lead Gen Variant,Display,Lead-gen completion rate,0.570,0.660,percent,false,5.1,CTA,Align the CTA offer and destination to reduce conversion friction

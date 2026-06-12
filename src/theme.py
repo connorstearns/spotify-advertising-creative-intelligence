@@ -345,9 +345,9 @@ hr {{ border-color: var(--border) !important; }}
   overflow: visible;
 }}
 .role-diagnosis {{
-  display: flex;
-  gap: 0.7rem;
-  align-items: baseline;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 1rem;
   padding: 0.85rem 1rem;
   margin-bottom: 0.8rem;
   border: 1px solid var(--border);
@@ -356,7 +356,71 @@ hr {{ border-color: var(--border) !important; }}
   border-radius: 0 0 15px 15px;
   background: var(--card-bg-alt);
 }}
+.role-diagnosis-item {{
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}}
 .role-diagnosis-copy {{
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}}
+
+.diagnostic-card {{
+  height: 100%;
+  padding: 1.15rem 1.2rem;
+  margin: 0.45rem 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card-bg);
+}}
+.diagnostic-card-top {{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}}
+.diagnostic-title {{
+  margin-top: 0.25rem;
+  color: var(--text-primary);
+  font-size: 1.08rem;
+  font-weight: 710;
+  letter-spacing: -0.025em;
+}}
+.diagnostic-grid {{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}}
+.diagnostic-field {{
+  padding: 0.7rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card-bg-alt);
+}}
+.diagnostic-label {{
+  color: var(--text-secondary);
+  font-size: 0.66rem;
+  font-weight: 680;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}}
+.diagnostic-value {{
+  margin-top: 0.25rem;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  font-weight: 620;
+  line-height: 1.35;
+}}
+.diagnostic-action {{
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  margin-top: 0.85rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
   color: var(--text-primary);
   font-size: 0.84rem;
   line-height: 1.45;

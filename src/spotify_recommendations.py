@@ -58,6 +58,21 @@ def role_health(role_frame: pd.DataFrame) -> dict[str, str | float]:
     }
 
 
+def signal_status(
+    current: float,
+    prior: float,
+    lower_is_better: bool = False,
+) -> tuple[str, str, float]:
+    change = signal_change(current, prior, lower_is_better)
+    if change >= 0.05:
+        return "Improving", "positive", change
+    if change >= -0.02:
+        return "Stable", "neutral", change
+    if change >= -0.07:
+        return "Watch", "warning", change
+    return "Needs Action", "danger", change
+
+
 def portfolio_insights(role_mix: pd.DataFrame, territories: pd.DataFrame) -> list[str]:
     insights = []
     for frame, label, column in [

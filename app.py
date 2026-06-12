@@ -3,28 +3,17 @@ import streamlit as st
 
 from src.access_control import require_demo_access
 from src.data_loader import load_workbook
-from src.normalization import scorecard_dict
-from src.spotify_config import (
-    APP_TITLE,
-    CHANNEL_GUIDANCE,
-    CREATIVE_TERRITORIES,
-    ROLE_PERFORMANCE,
-)
-from src.spotify_recommendations import fatigue_flags, portfolio_insights, role_health, territory_signal
-from src.theme import APP_CSS, CHART_COLORS, DANGER, MUTED_BLUE, MUTED_TEAL, PRIMARY_GREEN, WARNING
+from src.reporting import first_available, format_channel_fit, role_signal_trends
+from src.spotify_config import APP_TITLE, CREATIVE_TERRITORIES, ROLE_PERFORMANCE
+from src.spotify_recommendations import role_health, signal_status
+from src.theme import APP_CSS
 from src.ui_components import (
-    money,
-    number,
-    percent,
-    render_bar_chart,
-    render_definition_card,
+    format_signal_value,
+    render_diagnostic_card,
     render_insight_card,
-    render_kpi_card,
-    render_recommendation_card,
     render_role_diagnosis,
     render_role_header,
     render_role_signal,
-    render_scatter_chart,
     render_section_header,
     render_status_chip,
     safe_table,
@@ -42,26 +31,19 @@ def get_data():
     return load_workbook(st.secrets)
 
 
-def render_hero() -> None:
-    st.markdown(
-        """
-        <div class="hero-panel">
-          <div class="eyebrow">Independent pitch concept · Creative intelligence</div>
-          <div class="hero-title">Spotify Advertising Paid Creative Intelligence</div>
-          <div class="hero-subtitle">
-            This sample shows how the selected creative territories can be measured, compared, refreshed,
-            and translated into next-test recommendations.
-          </div>
-          <div class="hero-flow">
-            <span class="flow-step">Tag Creative</span><span class="flow-arrow">→</span>
-            <span class="flow-step">Read Performance</span><span class="flow-arrow">→</span>
-            <span class="flow-step">Diagnose Signals</span><span class="flow-arrow">→</span>
-            <span class="flow-step">Decide What To Make Next</span>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+def bool_value(value) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"true", "1", "yes"}
+    return bool(value)
+
+
+def status_tone(status: str) -> str:
+    return {
+        "Improving": "positive",
+        "Stable": "neutral",
+        "Watch": "warning",
+        "Needs Action": "danger",
+    }.get(status, "neutral")
 
 
 workbook = get_data()
@@ -70,7 +52,7 @@ with st.sidebar:
         """
         <div class="eyebrow">Pitch sample</div>
         <h2 style="margin-top:.35rem">Creative Intelligence</h2>
-        <p style="color:#A8B3AD;font-size:.82rem;margin-top:-.4rem">Paid creative diagnostics</p>
+        <p style="color:#A8B3AD;font-size:.82rem;margin-top:-.4rem">Creative diagnostics + production planning</p>
         """,
         unsafe_allow_html=True,
     )
@@ -78,12 +60,10 @@ with st.sidebar:
         "Navigate",
         [
             "Creative Role Performance",
-            "Executive Overview",
-            "Portfolio Balance",
             "Creative Territories",
-            "Formats + Channels",
-            "Fatigue Watchlist",
-            "Next Tests / Decision Log",
+            "Format + Channel Fit",
+            "Fatigue + Refresh Needs",
+            "What To Make Next",
             "Data Requirements / QA",
         ],
         label_visibility="collapsed",
@@ -96,8 +76,8 @@ with st.sidebar:
 if page == "Creative Role Performance":
     render_section_header(
         "Creative Role Performance",
-        "Each role is evaluated against the signals that show whether it is doing its job, with current-period performance compared directly to the prior period.",
-        "Role-specific diagnostics",
+        "Is each creative role doing its job? Current-period signals are compared with the prior period to diagnose health and direct the next production action.",
+        "Role-specific KPI trends",
     )
     st.markdown(
         """
@@ -111,10 +91,10 @@ if page == "Creative Role Performance":
         """,
         unsafe_allow_html=True,
     )
-    performance = workbook.get("report_role_performance")
+    performance = role_signal_trends(workbook)
     if performance.empty:
         render_insight_card(
-            "Role-specific trend data is not available yet.",
+            "Role-specific trend data is not available yet. Add report_role_signal_trends or model_role_signal_trends to enable this view.",
             title="Performance data unavailable",
             tone="info",
         )
@@ -140,149 +120,182 @@ if page == "Creative Role Performance":
                         signal.get("lower_is_better", False),
                         str(signal.get("trend_values", "")),
                     )
-            render_role_diagnosis(str(health["recommendation"]), str(health["tone"]))
-
-elif page == "Executive Overview":
-    render_hero()
-    scorecard = scorecard_dict(workbook.get("report_scorecard"))
-    metrics = [
-        ("Total Spend", "total_spend", money, MUTED_BLUE),
-        ("Impressions", "impressions", number, MUTED_TEAL),
-        ("Clicks", "clicks", number, PRIMARY_GREEN),
-        ("Engagements", "engagements", number, "#B79CFF"),
-        ("Conversions", "conversions", number, WARNING),
-        ("CTR", "ctr", percent, MUTED_TEAL),
-        ("CPL", "cpl", money, MUTED_BLUE),
-        ("Mapped Assets", "mapped_asset_count", number, PRIMARY_GREEN),
-        ("Unmapped Assets", "unmapped_asset_count", number, DANGER),
-    ]
-    for start in range(0, len(metrics), 5):
-        columns = st.columns(min(5, len(metrics) - start))
-        for column, (label, key, formatter, accent) in zip(columns, metrics[start : start + 5]):
-            with column:
-                render_kpi_card(label, formatter(scorecard.get(key)), accent)
-    render_insight_card(
-        "This sample shows how the selected creative territories can be measured, compared, refreshed, and translated into next-test recommendations.",
-        title="How to read this",
-        tone="info",
-    )
-
-elif page == "Portfolio Balance":
-    render_section_header(
-        "Portfolio Balance",
-        "See where investment is concentrated and where the production plan needs broader coverage.",
-        "Investment architecture",
-    )
-    role_mix = workbook.get("report_role_mix")
-    territories = workbook.get("report_territory_analysis")
-    left, right = st.columns(2)
-    with left:
-        render_bar_chart(role_mix, "role", "spend", "Spend by creative role")
-    with right:
-        render_bar_chart(territories, "territory", "spend", "Spend by creative territory")
-    for insight in portfolio_insights(role_mix, territories):
-        render_insight_card(insight, tone="warning")
-    render_section_header("Balance Readout", "A planning view of concentrated and underrepresented portfolio segments.", "Production planning")
-    safe_table(workbook.get("report_portfolio_balance"), "report_portfolio_balance")
-    render_recommendation_card(
-        "Develop the selected territories",
-        "Build timely Drop Into The Moment variants and version Don’t Just Play — Perform by buyer segment, format, and funnel role.",
-    )
+            diagnosis = (
+                "Signals are strengthening and the role is doing its job."
+                if health["status"] == "Improving"
+                else "Signals are holding within a narrow range."
+                if health["status"] == "Stable"
+                else "At least one primary signal is weakening and needs a focused creative response."
+            )
+            render_role_diagnosis(
+                diagnosis,
+                str(health["recommendation"]),
+                str(health["tone"]),
+            )
 
 elif page == "Creative Territories":
     render_section_header(
         "Creative Territories",
-        "Compare the two selected creative territories and identify where to scale, refresh, or improve the next step.",
-        "Territory performance",
+        "Compare how the two selected creative territories are performing by role, signal trend, and next move.",
+        "Territory diagnostics",
     )
-    territory_columns = st.columns(2)
-    for index, (territory, definition) in enumerate(CREATIVE_TERRITORIES.items()):
-        with territory_columns[index]:
-            render_definition_card(territory, definition, CHART_COLORS[index])
-    data = workbook.get("report_territory_analysis").copy()
-    if not data.empty:
-        median_ctr = data.get("ctr", pd.Series([0])).median()
-        median_spend = data.get("spend", pd.Series([0])).median()
-        data["creative_implication"] = data.apply(territory_signal, axis=1, args=(median_ctr, median_spend))
-        render_scatter_chart(data, "spend", "ctr", "territory", "impressions", "Investment vs. response")
-    safe_table(
-        data,
-        "report_territory_analysis",
-        ["territory", "spend", "impressions", "clicks", "engagements", "conversions", "ctr", "cpl", "creative_implication"],
-    )
+    territory_report = workbook.get("report_territory_analysis")
+    cards = st.columns(2)
+    for index, (territory, description) in enumerate(CREATIVE_TERRITORIES.items()):
+        row = (
+            territory_report[territory_report.get("creative_territory", pd.Series(dtype=str)) == territory]
+            if not territory_report.empty
+            else pd.DataFrame()
+        )
+        values = row.iloc[0].to_dict() if not row.empty else {}
+        status = str(values.get("health_status", "Stable"))
+        with cards[index]:
+            render_diagnostic_card(
+                territory,
+                description,
+                [
+                    ("Strongest role", str(values.get("strongest_role", "Not available"))),
+                    ("Weakest role", str(values.get("weakest_role", "Not available"))),
+                    ("Improving signal", str(values.get("improving_signal", "Not available"))),
+                    ("Watch signal", str(values.get("watch_signal", "Not available"))),
+                    ("Role health", str(values.get("role_health_summary", "Awaiting signal data"))),
+                ],
+                str(values.get("next_recommended_move", "Continue monitoring role-specific signals.")),
+                status,
+                status_tone(status),
+            )
 
-elif page == "Formats + Channels":
+elif page == "Format + Channel Fit":
     render_section_header(
-        "Formats + Channels",
-        "Compare territory-specific and shared formats, then connect performance to the role each channel can play.",
-        "Activation coverage",
+        "Format + Channel Fit",
+        "Tie each format to its creative territory, role, channel, and role-relevant primary signal.",
+        "Activation diagnostics",
     )
-    formats = workbook.get("report_format_analysis")
-    render_bar_chart(formats, "format", "spend", "Format investment")
-    safe_table(formats, "report_format_analysis")
-    render_section_header("Channel × Role Coverage", "Where each channel currently contributes across the creative journey.", "Cross-channel system")
-    safe_table(workbook.get("report_channel_role_matrix"), "report_channel_role_matrix")
-    with st.expander("Channel interpretation guide"):
-        cols = st.columns(2)
-        for index, (channel, guidance) in enumerate(CHANNEL_GUIDANCE.items()):
-            with cols[index % 2]:
-                render_definition_card(channel, guidance, CHART_COLORS[index])
+    fit = format_channel_fit(workbook)
+    if fit.empty:
+        render_insight_card(
+            "Format and channel fit data is not available yet.",
+            title="Fit data unavailable",
+            tone="info",
+        )
+    else:
+        for start in range(0, len(fit), 2):
+            columns = st.columns(2)
+            for column, (_, row) in zip(columns, fit.iloc[start : start + 2].iterrows()):
+                lower_is_better = bool_value(row.get("lower_is_better", False))
+                status, tone, change = signal_status(
+                    float(row.get("current_value", 0)),
+                    float(row.get("prior_value", 0)),
+                    lower_is_better,
+                )
+                value_format = str(row.get("value_format", "number"))
+                with column:
+                    render_diagnostic_card(
+                        str(row.get("format", "Format")),
+                        str(row.get("creative_territory", row.get("territory", "Selected territory"))),
+                        [
+                            ("Creative role", str(row.get("creative_role", row.get("role", "Not available")))),
+                            ("Channel", str(row.get("channel", "Not available"))),
+                            ("Primary signal", str(row.get("primary_signal", "Not available"))),
+                            (
+                                "Current / prior",
+                                f"{format_signal_value(row.get('current_value', 0), value_format)} / "
+                                f"{format_signal_value(row.get('prior_value', 0), value_format)}",
+                            ),
+                            ("Change", f"{change:+.1%} directional"),
+                        ],
+                        str(row.get("recommendation", "Continue monitoring role fit.")),
+                        status,
+                        tone,
+                    )
 
-elif page == "Fatigue Watchlist":
+elif page == "Fatigue + Refresh Needs":
     render_section_header(
-        "Fatigue Watchlist",
-        "Spot assets that need a new hook, proof point, edit, audience version, CTA, or retirement decision.",
+        "Fatigue + Refresh Needs",
+        "Which role-specific signals are weakening, and what type of creative refresh is needed?",
         "Creative health",
     )
-    data = fatigue_flags(workbook.get("report_fatigue_watchlist"))
-    if not data.empty:
-        flagged = int((data["fatigue_flag"] | data["spend_efficiency_flag"]).sum())
-        cols = st.columns([1, 3])
-        with cols[0]:
-            render_kpi_card("Assets requiring attention", number(flagged), DANGER if flagged else PRIMARY_GREEN)
-        with cols[1]:
-            render_insight_card(
-                "Priority combines frequency pressure with below-median response and inefficient high-spend assets.",
-                title="Watchlist logic",
-                tone="warning",
-            )
-    safe_table(
-        data,
-        "report_fatigue_watchlist",
-        ["asset_id", "asset_name", "channel", "territory", "role", "format", "spend", "avg_frequency", "clicks", "impressions", "ctr", "recommendation"],
-    )
+    fatigue = workbook.get("report_fatigue_watchlist")
+    if fatigue.empty:
+        render_insight_card("No fatigue watchlist rows are available.", title="No current watchlist", tone="info")
+    else:
+        for start in range(0, len(fatigue), 2):
+            columns = st.columns(2)
+            for column, (_, row) in zip(columns, fatigue.iloc[start : start + 2].iterrows()):
+                value_format = str(row.get("value_format", "number"))
+                lower_is_better = bool_value(row.get("lower_is_better", False))
+                status, tone, change = signal_status(
+                    float(row.get("current_value", 0)),
+                    float(row.get("prior_value", 0)),
+                    lower_is_better,
+                )
+                with column:
+                    render_diagnostic_card(
+                        str(row.get("asset_name", row.get("asset_id", "Asset"))),
+                        f"{row.get('creative_territory', '')} · {row.get('creative_role', '')}",
+                        [
+                            ("Asset ID", str(row.get("asset_id", "Not available"))),
+                            ("Format / channel", f"{row.get('format', '')} · {row.get('channel', '')}"),
+                            ("Declining signal", str(row.get("signal_declining", "Not available"))),
+                            (
+                                "Current / prior",
+                                f"{format_signal_value(row.get('current_value', 0), value_format)} / "
+                                f"{format_signal_value(row.get('prior_value', 0), value_format)}",
+                            ),
+                            ("Change / frequency", f"{change:+.1%} · {row.get('frequency', '-')}x"),
+                            ("Refresh type", str(row.get("recommended_refresh_type", "Refresh"))),
+                        ],
+                        str(row.get("recommended_action", "Refresh the weakening creative signal.")),
+                        status,
+                        tone,
+                    )
 
-elif page == "Next Tests / Decision Log":
+elif page == "What To Make Next":
     render_section_header(
-        "Next Tests / Decision Log",
-        "Decide what should be scaled, versioned, refreshed, reframed, replaced, or retired.",
-        "Production decisions",
+        "What To Make Next",
+        "The goal is not reporting for reporting’s sake. The goal is to decide what should be scaled, versioned, refreshed, reframed, replaced, or retired.",
+        "Production planning",
     )
-    tests = workbook.get("report_next_tests")
-    if not tests.empty:
-        for _, row in tests.head(4).iterrows():
-            render_recommendation_card(
-                str(row.get("suggested_action", "Recommended test")),
-                f"{row.get('trigger', '')} Success signal: {row.get('success_signal', '')}",
-                status=f"Priority {row.get('priority', '')}",
-            )
-    render_section_header("Decision Log", "A durable record of signals, actions, ownership, and review timing.", "Operating cadence")
-    safe_table(workbook.get("creative_decision_log"), "creative_decision_log")
+    recommendations = workbook.get("report_next_tests")
+    if recommendations.empty:
+        render_insight_card("No production recommendations are available.", title="No next tests", tone="info")
+    else:
+        for start in range(0, len(recommendations), 2):
+            columns = st.columns(2)
+            for column, (_, row) in zip(columns, recommendations.iloc[start : start + 2].iterrows()):
+                with column:
+                    render_diagnostic_card(
+                        str(row.get("recommendation", "Recommended test")),
+                        str(row.get("creative_territory", "Selected territory")),
+                        [
+                            ("Creative role", str(row.get("creative_role", "Not available"))),
+                            ("Signal to improve", str(row.get("signal_to_improve", "Not available"))),
+                            ("Production action", str(row.get("production_action", "Not available"))),
+                            ("Owner", str(row.get("owner", "Not assigned"))),
+                            ("Rationale", str(row.get("rationale", "Not available"))),
+                        ],
+                        f"Status: {row.get('status', 'Planned')}",
+                        str(row.get("status", "Planned")),
+                        "positive" if str(row.get("status", "")).lower() == "in production" else "info",
+                    )
+    decision_log = workbook.get("creative_decision_log")
+    if not decision_log.empty:
+        with st.expander("Decision log detail"):
+            safe_table(decision_log, "creative_decision_log")
 
 else:
     render_section_header(
         "Data Requirements / QA",
-        "A reliable creative intelligence layer depends on consistent inputs and complete asset taxonomy.",
+        "A reliable creative intelligence layer depends on approved source access, complete taxonomy, and consistent asset naming.",
         "Data foundation",
     )
     safe_table(workbook.get("data_requirements"), "data_requirements")
     gaps = workbook.get("qa_mapping_gaps")
-    render_section_header("Mapping Quality", "Identify missing taxonomy before it weakens the next creative readout.", "Quality assurance")
     if gaps.empty:
-        render_insight_card("No unmapped assets are present in the current demo dataset.", title="Mapping complete", tone="positive")
+        render_insight_card("No mapping gaps are present in the current demo data.", title="Mapping complete", tone="positive")
     else:
         render_insight_card(
-            f"{len(gaps)} asset mapping gap(s) need attention before the next readout.",
+            f"{len(gaps)} mapping gap(s) need attention before the next readout.",
             title="Taxonomy cleanup required",
             tone="danger",
         )
