@@ -1,6 +1,61 @@
 import pandas as pd
 
-from src.spotify_config import REQUIRED_ROLES
+from src.spotify_config import REQUIRED_ROLES, ROLE_PERFORMANCE
+
+
+def _as_bool(value) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"true", "1", "yes"}
+    return bool(value)
+
+
+def signal_change(current: float, prior: float, lower_is_better: bool = False) -> float:
+    if pd.isna(current) or pd.isna(prior) or prior == 0:
+        return 0.0
+    raw_change = (current - prior) / abs(prior)
+    return -raw_change if lower_is_better else raw_change
+
+
+def role_health(role_frame: pd.DataFrame) -> dict[str, str | float]:
+    if role_frame.empty:
+        return {
+            "status": "Stable",
+            "tone": "neutral",
+            "score": 0.0,
+            "recommendation": "Continue monitoring role-specific signals.",
+        }
+    changes = [
+        signal_change(
+            row.get("current_value", 0),
+            row.get("prior_value", 0),
+            _as_bool(row.get("lower_is_better", False)),
+        )
+        for _, row in role_frame.iterrows()
+    ]
+    score = sum(changes) / len(changes)
+    if score >= 0.05:
+        status, tone = "Improving", "positive"
+    elif score >= -0.02:
+        status, tone = "Stable", "neutral"
+    elif score >= -0.07:
+        status, tone = "Watch", "warning"
+    else:
+        status, tone = "Needs Action", "danger"
+    recommendation = (
+        "Continue the current direction and build the next measured variant."
+        if status == "Improving"
+        else "Hold the role strategy steady and monitor the next period."
+        if status == "Stable"
+        else ROLE_PERFORMANCE.get(role_frame.iloc[0].get("role"), {}).get(
+            "recommendation", "Refresh the creative approach."
+        )
+    )
+    return {
+        "status": status,
+        "tone": tone,
+        "score": score,
+        "recommendation": recommendation,
+    }
 
 
 def portfolio_insights(role_mix: pd.DataFrame, territories: pd.DataFrame) -> list[str]:

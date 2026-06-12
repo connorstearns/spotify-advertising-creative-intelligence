@@ -38,3 +38,17 @@ def test_format_taxonomy_matches_selected_deck_formats():
 
     assert set(formats["format"]) == EXPECTED_FORMATS
     assert set(formats["territory"]) == SELECTED_TERRITORIES | {"Both selected territories"}
+
+
+def test_role_performance_has_current_prior_and_three_signals_per_role():
+    performance = pd.read_csv(SAMPLE_DIR / "report_role_performance.csv")
+    expected_roles = {
+        "Problem Framing",
+        "Solution Education",
+        "Proof & Credibility",
+        "Action / Conversion",
+    }
+
+    assert set(performance["role"]) == expected_roles
+    assert performance.groupby("role").size().eq(3).all()
+    assert performance[["current_value", "prior_value"]].notna().all().all()

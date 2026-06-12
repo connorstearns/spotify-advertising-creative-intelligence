@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.spotify_recommendations import fatigue_flags, portfolio_insights
+from src.spotify_recommendations import fatigue_flags, portfolio_insights, role_health, signal_change
 
 
 def test_portfolio_concentration_and_missing_roles():
@@ -36,3 +36,21 @@ def test_fatigue_flag():
     result = fatigue_flags(frame)
     assert bool(result.loc[0, "fatigue_flag"])
     assert "Breaking Drop" in result.loc[0, "recommendation"]
+
+
+def test_lower_cost_is_treated_as_improvement():
+    assert signal_change(90, 100, lower_is_better=True) == 0.1
+
+
+def test_role_health_returns_needs_action_for_weak_conversion_signals():
+    frame = pd.DataFrame(
+        {
+            "role": ["Action / Conversion"] * 3,
+            "current_value": [0.047, 142, 0.63],
+            "prior_value": [0.051, 128, 0.68],
+            "lower_is_better": [False, True, False],
+        }
+    )
+    health = role_health(frame)
+    assert health["status"] == "Needs Action"
+    assert "CTA clarity" in health["recommendation"]

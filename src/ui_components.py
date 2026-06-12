@@ -97,6 +97,113 @@ def render_definition_card(title: str, body: str, accent: str = MUTED_TEAL) -> N
     )
 
 
+def format_signal_value(value: float, value_format: str) -> str:
+    if pd.isna(value):
+        return "-"
+    if value_format == "percent":
+        return f"{value:.1%}"
+    if value_format == "currency":
+        return f"${value:,.0f}"
+    return f"{value:,.0f}"
+
+
+def render_role_signal(
+    label: str,
+    current: float,
+    prior: float,
+    value_format: str,
+    lower_is_better: bool = False,
+    trend_values: str = "",
+) -> None:
+    if isinstance(lower_is_better, str):
+        lower_is_better = lower_is_better.strip().lower() in {"true", "1", "yes"}
+    if prior:
+        raw_change = (current - prior) / abs(prior)
+    else:
+        raw_change = 0.0
+    directional_change = -raw_change if lower_is_better else raw_change
+    tone = "positive" if directional_change > 0.02 else "danger" if directional_change < -0.02 else "neutral"
+    arrow = "↑" if directional_change > 0.02 else "↓" if directional_change < -0.02 else "→"
+    color = PRIMARY_GREEN if tone == "positive" else DANGER if tone == "danger" else TEXT_SECONDARY
+    values = []
+    for item in str(trend_values).split("|"):
+        try:
+            values.append(float(item))
+        except ValueError:
+            continue
+    if len(values) >= 2:
+        minimum, maximum = min(values), max(values)
+        spread = maximum - minimum or 1
+        points = " ".join(
+            f"{index * (100 / (len(values) - 1)):.1f},{30 - ((value - minimum) / spread * 24):.1f}"
+            for index, value in enumerate(values)
+        )
+        sparkline = (
+            f'<svg class="signal-sparkline" viewBox="0 0 100 32" preserveAspectRatio="none">'
+            f'<polyline points="{points}" fill="none" stroke="{color}" stroke-width="2.5" '
+            f'stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        )
+    else:
+        sparkline = ""
+    st.markdown(
+        f"""
+        <div class="role-signal">
+          <div class="signal-topline">
+            <span class="signal-label">{label}</span>
+            <span class="signal-change" style="color:{color}">{arrow} {abs(raw_change):.1%} vs prior</span>
+          </div>
+          <div class="signal-period">Current period</div>
+          <div class="signal-value">{format_signal_value(current, value_format)}</div>
+          <div class="signal-prior">Prior period {format_signal_value(prior, value_format)}</div>
+          {sparkline}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_role_header(
+    role: str,
+    job: str,
+    question: str,
+    status: str,
+    tone: str,
+) -> None:
+    st.markdown(
+        f"""
+        <div class="role-card-header">
+          <div class="role-card-title-row">
+            <div>
+              <div class="role-card-title">{role}</div>
+              <div class="role-card-job">{job}</div>
+            </div>
+            <div>{render_status_chip(status, tone)}</div>
+          </div>
+          <div class="role-question">{question}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_role_diagnosis(recommendation: str, tone: str) -> None:
+    accent = {
+        "positive": PRIMARY_GREEN,
+        "warning": WARNING,
+        "danger": DANGER,
+        "neutral": MUTED_BLUE,
+    }.get(tone, MUTED_BLUE)
+    st.markdown(
+        f"""
+        <div class="role-diagnosis" style="--accent:{accent}">
+          <span class="card-label">Recommended action</span>
+          <span class="role-diagnosis-copy">{recommendation}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def _chart_layout(fig: go.Figure, height: int = 390) -> go.Figure:
     fig.update_layout(
         height=height,

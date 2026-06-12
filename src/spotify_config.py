@@ -15,6 +15,7 @@ TABS = [
     "model_creative_daily",
     "report_scorecard",
     "report_role_mix",
+    "report_role_performance",
     "report_territory_analysis",
     "report_format_analysis",
     "report_fatigue_watchlist",
@@ -39,6 +40,8 @@ NUMERIC_COLUMNS = {
     "avg_frequency",
     "mapped_asset_count",
     "unmapped_asset_count",
+    "current_value",
+    "prior_value",
 }
 
 REQUIRED_ROLES = [
@@ -64,6 +67,29 @@ ROLE_DEFINITIONS = {
     "Solution Education": "Explains how Spotify Advertising solves that challenge.",
     "Proof & Credibility": "Reduces skepticism with evidence, benchmarks, or case studies.",
     "Action / Conversion": "Creates a clear next step such as download, register, explore, or contact sales.",
+}
+
+ROLE_PERFORMANCE = {
+    "Problem Framing": {
+        "job": "Reframe the buyer's media challenge.",
+        "question": "Is this creative earning attention and relevance?",
+        "recommendation": "Refresh the hook or reframe the buyer pain.",
+    },
+    "Solution Education": {
+        "job": "Explain how Spotify Ads solves the challenge.",
+        "question": "Is this creative helping buyers understand the platform?",
+        "recommendation": "Simplify the explanation or clarify the Spotify Ads benefit.",
+    },
+    "Proof & Credibility": {
+        "job": "Reduce skepticism with evidence.",
+        "question": "Is this creative building confidence and proof?",
+        "recommendation": "Test a stronger benchmark, proof point, quote, or case example.",
+    },
+    "Action / Conversion": {
+        "job": "Create a clear next step.",
+        "question": "Is this creative converting interest into action?",
+        "recommendation": "Improve CTA clarity, offer relevance, destination alignment, or lead-gen friction.",
+    },
 }
 
 CHANNEL_GUIDANCE = {

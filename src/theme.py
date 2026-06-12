@@ -268,6 +268,100 @@ hr {{ border-color: var(--border) !important; }}
   text-transform: uppercase;
 }}
 
+.role-card-header {{
+  margin-top: 0.8rem;
+  padding: 1.25rem 1.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(135deg, #19201D, var(--card-bg));
+}}
+.role-card-title-row {{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}}
+.role-card-title {{
+  color: var(--text-primary);
+  font-size: 1.18rem;
+  font-weight: 720;
+  letter-spacing: -0.025em;
+}}
+.role-card-job {{
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+}}
+.role-question {{
+  margin-top: 0.8rem;
+  color: var(--text-primary);
+  font-size: 0.87rem;
+  font-weight: 620;
+}}
+.role-signal {{
+  min-height: 150px;
+  padding: 0.9rem 0.95rem 0.7rem;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}}
+.signal-topline {{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}}
+.signal-label {{
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 680;
+  letter-spacing: 0.025em;
+}}
+.signal-change {{ font-size: 0.76rem; font-weight: 720; }}
+.signal-period {{
+  margin-top: 0.55rem;
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}}
+.signal-value {{
+  margin-top: 0.15rem;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 730;
+  letter-spacing: -0.035em;
+}}
+.signal-prior {{
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}}
+.signal-sparkline {{
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin-top: 0.5rem;
+  overflow: visible;
+}}
+.role-diagnosis {{
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid var(--border);
+  border-top: 0;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 0 15px 15px;
+  background: var(--card-bg-alt);
+}}
+.role-diagnosis-copy {{
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}}
+
 [data-testid="stDataFrame"] {{
   overflow: hidden;
   border: 1px solid var(--border);

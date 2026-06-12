@@ -33,7 +33,8 @@ Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing t
 
 ## What it covers
 
-- Overview scorecard
+- Creative Role Performance with current-vs-prior role-specific KPI trends
+- Secondary executive overview scorecard
 - Portfolio balance by creative role and creative territory
 - Creative territory, role, format, and channel diagnostics
 - Fatigue watchlist

@@ -4,8 +4,13 @@ import streamlit as st
 from src.access_control import require_demo_access
 from src.data_loader import load_workbook
 from src.normalization import scorecard_dict
-from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, CREATIVE_TERRITORIES, ROLE_DEFINITIONS
-from src.spotify_recommendations import fatigue_flags, portfolio_insights, territory_signal
+from src.spotify_config import (
+    APP_TITLE,
+    CHANNEL_GUIDANCE,
+    CREATIVE_TERRITORIES,
+    ROLE_PERFORMANCE,
+)
+from src.spotify_recommendations import fatigue_flags, portfolio_insights, role_health, territory_signal
 from src.theme import APP_CSS, CHART_COLORS, DANGER, MUTED_BLUE, MUTED_TEAL, PRIMARY_GREEN, WARNING
 from src.ui_components import (
     money,
@@ -16,6 +21,9 @@ from src.ui_components import (
     render_insight_card,
     render_kpi_card,
     render_recommendation_card,
+    render_role_diagnosis,
+    render_role_header,
+    render_role_signal,
     render_scatter_chart,
     render_section_header,
     render_status_chip,
@@ -69,10 +77,10 @@ with st.sidebar:
     page = st.radio(
         "Navigate",
         [
-            "Overview",
+            "Creative Role Performance",
+            "Executive Overview",
             "Portfolio Balance",
             "Creative Territories",
-            "Creative Roles",
             "Formats + Channels",
             "Fatigue Watchlist",
             "Next Tests / Decision Log",
@@ -85,7 +93,56 @@ with st.sidebar:
     st.caption("Access-controlled demo · Sample data only")
     st.caption("Directional signals · Not an official product")
 
-if page == "Overview":
+if page == "Creative Role Performance":
+    render_section_header(
+        "Creative Role Performance",
+        "Each role is evaluated against the signals that show whether it is doing its job, with current-period performance compared directly to the prior period.",
+        "Role-specific diagnostics",
+    )
+    st.markdown(
+        """
+        <div class="hero-flow" style="margin:0 0 1rem">
+          <span class="flow-step">Creative Role</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Primary Signals</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Trend</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Diagnosis</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Recommended Action</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    performance = workbook.get("report_role_performance")
+    if performance.empty:
+        render_insight_card(
+            "Role-specific trend data is not available yet.",
+            title="Performance data unavailable",
+            tone="info",
+        )
+    else:
+        for role, definition in ROLE_PERFORMANCE.items():
+            role_frame = performance[performance["role"] == role]
+            health = role_health(role_frame)
+            render_role_header(
+                role,
+                definition["job"],
+                definition["question"],
+                str(health["status"]),
+                str(health["tone"]),
+            )
+            signal_columns = st.columns(3, gap="small")
+            for column, (_, signal) in zip(signal_columns, role_frame.head(3).iterrows()):
+                with column:
+                    render_role_signal(
+                        str(signal.get("signal_label", signal.get("signal", "Signal"))),
+                        float(signal.get("current_value", 0)),
+                        float(signal.get("prior_value", 0)),
+                        str(signal.get("value_format", "number")),
+                        signal.get("lower_is_better", False),
+                        str(signal.get("trend_values", "")),
+                    )
+            render_role_diagnosis(str(health["recommendation"]), str(health["tone"]))
+
+elif page == "Executive Overview":
     render_hero()
     scorecard = scorecard_dict(workbook.get("report_scorecard"))
     metrics = [
@@ -152,25 +209,6 @@ elif page == "Creative Territories":
         data,
         "report_territory_analysis",
         ["territory", "spend", "impressions", "clicks", "engagements", "conversions", "ctr", "cpl", "creative_implication"],
-    )
-
-elif page == "Creative Roles":
-    render_section_header(
-        "Creative Roles",
-        "Evaluate each asset by the job it is designed to do, not by a single universal KPI.",
-        "Jobs to be done",
-    )
-    columns = st.columns(2)
-    for index, (role, definition) in enumerate(ROLE_DEFINITIONS.items()):
-        with columns[index % 2]:
-            render_definition_card(role, definition, CHART_COLORS[index])
-    role_mix = workbook.get("report_role_mix")
-    render_bar_chart(role_mix, "role", "spend", "Role investment")
-    safe_table(role_mix, "report_role_mix")
-    render_insight_card(
-        "Problem Framing: attention, engagement, CTR · Solution Education: CTR and content engagement · Proof & Credibility: warm-audience response · Action / Conversion: conversion rate and CPL.",
-        title="Evaluate roles on their intended outcome",
-        tone="info",
     )
 
 elif page == "Formats + Channels":
