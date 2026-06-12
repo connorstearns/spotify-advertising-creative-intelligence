@@ -4,6 +4,8 @@ A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence 
 
 This sample complements media agency reporting; it does not replace it. The app reads from a structured Google Sheet when credentials are configured and falls back to matching CSV files in `data/sample_exports/`. Source identifiers and connector details are never shown in the UI.
 
+The illustrative taxonomy foregrounds the WIP creative territories **Drop Into The Moment** and **Don’t Just Play — Perform**, with **Proof & Performance** as a supporting territory. Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
+
 ## Run locally
 
 ```powershell
@@ -40,4 +42,3 @@ Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing t
 ```powershell
 python -m pytest
 ```
-

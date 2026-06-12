@@ -34,7 +34,11 @@ def territory_signal(row: pd.Series, median_ctr: float, median_spend: float) -> 
     conversions = row.get("conversions", 0) or 0
     territory = row.get("territory", "")
     if territory == "Proof & Performance" and spend > median_spend:
-        return "Watch over-reliance on stat-driven creative; add problem framing and creative possibility."
+        return "Pair performance proof points with stronger creative excellence hooks."
+    if territory == "Drop Into The Moment" and ctr >= median_ctr:
+        return "Build a new Breaking Drop variant for a timely fandom or industry moment."
+    if territory == "Don’t Just Play — Perform" and ctr >= median_ctr:
+        return "Version “Play with Creative. Perform with numbers.” by buyer segment."
     if ctr >= median_ctr and conversions <= 1:
         return "Interest is strong; strengthen the next step and conversion path."
     if spend >= median_spend and ctr < median_ctr:
@@ -54,9 +58,23 @@ def fatigue_flags(frame: pd.DataFrame) -> pd.DataFrame:
     median_ctr, median_spend = ctr.median(), spend.median()
     result["fatigue_flag"] = (frequency >= 3) & (ctr < median_ctr)
     result["spend_efficiency_flag"] = (spend >= median_spend) & (ctr < median_ctr)
-    result["recommendation"] = [
-        "Refresh hook or proof point" if fatigue else "Add clearer CTA" if inefficient else "Monitor"
-        for fatigue, inefficient in zip(result["fatigue_flag"], result["spend_efficiency_flag"])
-    ]
-    return result
 
+    def recommendation(row: pd.Series) -> str:
+        territory = row.get("territory", "")
+        role = row.get("role", "")
+        if row["fatigue_flag"] and territory == "Drop Into The Moment":
+            return "Build a new Breaking Drop variant for a timely fandom or industry moment"
+        if row["fatigue_flag"] and territory == "Don’t Just Play — Perform":
+            return "Version the creative excellence hook by buyer segment"
+        if row["fatigue_flag"] and territory == "Proof & Performance":
+            return "Pair the proof point with a stronger creative excellence hook"
+        if row["spend_efficiency_flag"] and role == "Action / Conversion":
+            return "Add a clearer next step to the selected territory"
+        if row["fatigue_flag"]:
+            return "Refresh the hook or proof point"
+        if row["spend_efficiency_flag"]:
+            return "Reframe the message before adding spend"
+        return "Monitor"
+
+    result["recommendation"] = result.apply(recommendation, axis=1)
+    return result

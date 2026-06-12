@@ -3,7 +3,7 @@ import streamlit as st
 
 from src.data_loader import load_workbook
 from src.normalization import scorecard_dict
-from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, ROLE_DEFINITIONS
+from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, MESSAGE_TERRITORIES, ROLE_DEFINITIONS
 from src.spotify_recommendations import fatigue_flags, portfolio_insights, territory_signal
 from src.theme import APP_CSS, CHART_COLORS, DANGER, MUTED_BLUE, MUTED_TEAL, PRIMARY_GREEN, WARNING
 from src.ui_components import (
@@ -124,7 +124,7 @@ elif page == "Portfolio Balance":
     safe_table(workbook.get("report_portfolio_balance"), "report_portfolio_balance")
     render_recommendation_card(
         "Rebalance around proven signals",
-        "Add underrepresented roles, build adjacent variants around winning territories, and balance proof-heavy creative with problem framing and creative possibility.",
+        "Build timely Drop Into The Moment variants, version Don’t Just Play — Perform by buyer segment, and pair proof-heavy creative with stronger creative excellence hooks.",
     )
 
 elif page == "Message Territories":
@@ -133,6 +133,10 @@ elif page == "Message Territories":
         "Rank the narratives earning attention and identify where to scale, refresh, or improve the next step.",
         "Narrative performance",
     )
+    territory_columns = st.columns(3)
+    for index, (territory, definition) in enumerate(MESSAGE_TERRITORIES.items()):
+        with territory_columns[index]:
+            render_definition_card(territory, definition, CHART_COLORS[index])
     data = workbook.get("report_territory_analysis").copy()
     if not data.empty:
         median_ctr = data.get("ctr", pd.Series([0])).median()
@@ -202,7 +206,7 @@ elif page == "Fatigue Watchlist":
     safe_table(
         data,
         "report_fatigue_watchlist",
-        ["asset_id", "channel", "territory", "role", "format", "spend", "avg_frequency", "clicks", "impressions", "ctr", "recommendation"],
+        ["asset_id", "asset_name", "channel", "territory", "role", "format", "spend", "avg_frequency", "clicks", "impressions", "ctr", "recommendation"],
     )
 
 elif page == "Next Tests / Decision Log":

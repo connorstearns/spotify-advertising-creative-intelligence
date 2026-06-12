@@ -48,6 +48,20 @@ REQUIRED_ROLES = [
     "Action / Conversion",
 ]
 
+MESSAGE_TERRITORIES = {
+    "Drop Into The Moment": (
+        "Real-time culture, trending fandoms, and timely advertiser opportunities. "
+        "Shows how brands can identify where fandom is building and act on cultural moments with measurable signals."
+    ),
+    "Don’t Just Play — Perform": (
+        "Creative excellence plus measurable performance. Brings artistry and impact together in a category "
+        "often dominated by functionality, metrics, and data."
+    ),
+    "Proof & Performance": (
+        "Evidence, benchmarks, and outcome signals that make the performance case credible."
+    ),
+}
+
 ROLE_DEFINITIONS = {
     "Problem Framing": "Reframes the buyer's media challenge and creates a reason to care.",
     "Solution Education": "Explains how Spotify Advertising solves that challenge.",
@@ -63,4 +77,3 @@ CHANNEL_GUIDANCE = {
     "Display": "Reinforcement, retargeting, proof points, and CTA support",
     "CTV / TikTok": "Future motion-first awareness and education adaptation",
 }
-

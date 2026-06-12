@@ -1,7 +1,6 @@
-asset_id,channel,territory,role,format,spend,avg_frequency,clicks,impressions,ctr
-SPOT-VID-014,Meta,Attention & Context,Problem Framing,Short motion hook,18400,4.2,8900,1180000,0.0075
-SPOT-LI-022,LinkedIn,Proof & Performance,Proof & Credibility,Case study card,22600,3.7,7200,1020000,0.0071
-SPOT-YT-008,YouTube,Creative Possibility,Solution Education,Product explainer,15100,2.4,9100,850000,0.0107
-SPOT-RED-005,Reddit,Media Mix Expansion,Problem Framing,Stat animation,7800,3.3,5900,510000,0.0116
-SPOT-DSP-019,Display,Full-Funnel Impact,Action / Conversion,Lead-gen / CTA asset,12100,5.1,3900,720000,0.0054
-
+asset_id,asset_name,channel,territory,role,format,spend,avg_frequency,clicks,impressions,ctr
+SPOT-VID-014,Breaking Drop — Festival Fandom,Meta,Drop Into The Moment,Problem Framing,Short motion hook,18400,4.2,8900,1180000,0.0075
+SPOT-LI-022,Star Performers — B2B Outcomes,LinkedIn,Proof & Performance,Proof & Credibility,Case study card,22600,3.7,7200,1020000,0.0071
+SPOT-YT-008,Play with Creative. Perform with Numbers.,YouTube,Don’t Just Play — Perform,Solution Education,Product explainer,15100,2.4,9100,850000,0.0107
+SPOT-RED-005,Drop-ins of the Week — Tech Culture,Reddit,Drop Into The Moment,Problem Framing,Stat animation,7800,3.3,5900,510000,0.0116
+SPOT-DSP-019,Spotify Hits Both Notes,Display,Don’t Just Play — Perform,Action / Conversion,Lead-gen / CTA asset,12100,5.1,3900,720000,0.0054
