@@ -52,7 +52,7 @@ with st.sidebar:
         """
         <div class="eyebrow">Pitch sample</div>
         <h2 style="margin-top:.35rem; color:#F4F7F5;">
-            Creative <span style="color:#1DB954;">Intelligence</span>
+            Creative Intelligence</span>
         </h2>
         <p style="color:#1DB954;font-size:.82rem;margin-top:-.4rem">
             Creative diagnostics + production planning
