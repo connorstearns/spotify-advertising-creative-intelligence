@@ -134,6 +134,53 @@ hr {{ border-color: var(--border) !important; }}
 }}
 .flow-arrow {{ color: var(--green); font-size: 0.82rem; }}
 
+.access-panel {{
+  margin-top: 14vh;
+  padding: 2rem 2rem 1.5rem;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(145deg, #18201C 0%, #111614 72%);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}}
+.access-title {{
+  margin-top: 0.55rem;
+  color: var(--text-primary);
+  font-size: 2rem;
+  font-weight: 740;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}}
+.access-copy {{
+  margin-top: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}}
+[data-testid="stForm"] {{
+  padding: 0.25rem 2rem 2rem;
+  border: 1px solid var(--border);
+  border-top: 0;
+  border-radius: 0 0 18px 18px;
+  background: var(--card-bg);
+}}
+[data-testid="stTextInput"] input {{
+  color: var(--text-primary);
+  border-color: var(--border);
+  background: var(--card-bg-alt);
+}}
+[data-testid="stFormSubmitButton"] button {{
+  min-height: 2.8rem;
+  border: 1px solid var(--green);
+  background: var(--green);
+  color: #07100A;
+  font-weight: 720;
+}}
+[data-testid="stFormSubmitButton"] button:hover {{
+  border-color: #36D36D;
+  background: #36D36D;
+  color: #07100A;
+}}
+
 .section-header {{ margin: 0.7rem 0 1rem; }}
 .section-kicker {{
   color: var(--green);
@@ -245,4 +292,3 @@ hr {{ border-color: var(--border) !important; }}
 }}
 </style>
 """
-

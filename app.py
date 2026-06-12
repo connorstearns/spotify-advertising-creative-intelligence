@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 
+from src.access_control import require_demo_access
 from src.data_loader import load_workbook
 from src.normalization import scorecard_dict
 from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, CREATIVE_TERRITORIES, ROLE_DEFINITIONS
@@ -23,6 +24,9 @@ from src.ui_components import (
 
 st.set_page_config(page_title=APP_TITLE, page_icon=":material/analytics:", layout="wide")
 st.markdown(APP_CSS, unsafe_allow_html=True)
+
+if not require_demo_access(st.secrets, st.session_state):
+    st.stop()
 
 
 @st.cache_data(ttl=600)
@@ -78,7 +82,7 @@ with st.sidebar:
     )
     st.divider()
     st.markdown(render_status_chip("Demo environment", "positive"), unsafe_allow_html=True)
-    st.caption(workbook.source_label)
+    st.caption("Access-controlled demo · Sample data only")
     st.caption("Directional signals · Not an official product")
 
 if page == "Overview":

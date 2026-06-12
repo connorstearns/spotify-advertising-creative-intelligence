@@ -17,6 +17,16 @@ streamlit run app.py
 
 The bundled sample exports make the dashboard immediately demo-ready.
 
+## Demo access
+
+Set `app_password` in `.streamlit/secrets.toml` to require a password:
+
+```toml
+app_password = "set-this-outside-version-control"
+```
+
+The password is never stored in the repository. If `app_password` is omitted, local access is allowed and a warning is written only to the application logs.
+
 ## Google Sheets setup
 
 Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing the standard Google service-account fields. Share the source workbook with that service account. If credentials or a requested tab are unavailable, the app falls back to demo CSVs or displays a friendly empty state.
