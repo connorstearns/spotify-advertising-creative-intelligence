@@ -184,7 +184,34 @@ def safe_table(frame: pd.DataFrame, tab_name: str, columns: list[str] | None = N
         empty_state(tab_name)
         return
     selected = [column for column in (columns or list(frame.columns)) if column in frame.columns]
-    st.dataframe(frame[selected], width="stretch", hide_index=True)
+    column_labels = {
+        "territory": "Creative Territory",
+        "creative_territory": "Creative Territory",
+        "role": "Creative Role",
+        "format": "Format",
+        "asset_id": "Asset ID",
+        "asset_name": "Asset Name",
+        "avg_frequency": "Avg. Frequency",
+        "creative_implication": "Creative Implication",
+        "planning_action": "Planning Action",
+        "coverage_status": "Coverage Status",
+        "spend_share": "Spend Share",
+        "suggested_action": "Suggested Action",
+        "success_signal": "Success Signal",
+        "source_signal": "Source / Signal",
+        "next_review": "Next Review",
+    }
+    column_config = {
+        column: st.column_config.Column(column_labels[column])
+        for column in selected
+        if column in column_labels
+    }
+    st.dataframe(
+        frame[selected],
+        width="stretch",
+        hide_index=True,
+        column_config=column_config,
+    )
 
 
 def money(value) -> str:

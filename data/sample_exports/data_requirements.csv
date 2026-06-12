@@ -1,6 +1,5 @@
 data_source,required_fields,owner,cadence,why_it_matters
 Paid media delivery,Date channel campaign ad asset ID spend impressions clicks conversions,Media agency,Weekly,Connects investment and outcomes to each asset
-Creative taxonomy,Asset ID territory role format buyer segment,Creative team,At launch,Enables portfolio and message diagnostics
+Creative taxonomy,Asset ID creative territory role format buyer segment,Creative team,At launch,Enables selected-territory and role diagnostics
 Engagement signals,Video completions engaged visits content engagement,Media agency,Weekly,Evaluates education and attention roles fairly
 CRM outcomes,Qualified lead opportunity and revenue status,Revenue operations,Monthly,Adds downstream conversion quality
-

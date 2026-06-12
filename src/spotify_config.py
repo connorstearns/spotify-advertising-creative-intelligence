@@ -48,7 +48,7 @@ REQUIRED_ROLES = [
     "Action / Conversion",
 ]
 
-MESSAGE_TERRITORIES = {
+CREATIVE_TERRITORIES = {
     "Drop Into The Moment": (
         "Real-time culture, trending fandoms, and timely advertiser opportunities. "
         "Shows how brands can identify where fandom is building and act on cultural moments with measurable signals."
@@ -56,9 +56,6 @@ MESSAGE_TERRITORIES = {
     "Don’t Just Play — Perform": (
         "Creative excellence plus measurable performance. Brings artistry and impact together in a category "
         "often dominated by functionality, metrics, and data."
-    ),
-    "Proof & Performance": (
-        "Evidence, benchmarks, and outcome signals that make the performance case credible."
     ),
 }
 

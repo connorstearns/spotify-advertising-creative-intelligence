@@ -5,10 +5,12 @@ from src.spotify_recommendations import fatigue_flags, portfolio_insights
 
 def test_portfolio_concentration_and_missing_roles():
     roles = pd.DataFrame({"role": ["Proof & Credibility"], "spend": [100]})
-    territories = pd.DataFrame({"territory": ["Proof & Performance", "Drop Into The Moment"], "spend": [80, 20]})
+    territories = pd.DataFrame(
+        {"territory": ["Don’t Just Play — Perform", "Drop Into The Moment"], "spend": [80, 20]}
+    )
     insights = " ".join(portfolio_insights(roles, territories))
     assert "Missing role coverage" in insights
-    assert "Proof & Performance" in insights
+    assert "two selected territories" in insights
 
 
 def test_selected_territory_recommendation():

@@ -3,7 +3,7 @@ import streamlit as st
 
 from src.data_loader import load_workbook
 from src.normalization import scorecard_dict
-from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, MESSAGE_TERRITORIES, ROLE_DEFINITIONS
+from src.spotify_config import APP_TITLE, CHANNEL_GUIDANCE, CREATIVE_TERRITORIES, ROLE_DEFINITIONS
 from src.spotify_recommendations import fatigue_flags, portfolio_insights, territory_signal
 from src.theme import APP_CSS, CHART_COLORS, DANGER, MUTED_BLUE, MUTED_TEAL, PRIMARY_GREEN, WARNING
 from src.ui_components import (
@@ -37,7 +37,8 @@ def render_hero() -> None:
           <div class="eyebrow">Independent pitch concept · Creative intelligence</div>
           <div class="hero-title">Spotify Advertising Paid Creative Intelligence</div>
           <div class="hero-subtitle">
-            A sample creative diagnostics layer for translating paid media signals into production decisions.
+            This sample shows how the selected creative territories can be measured, compared, refreshed,
+            and translated into next-test recommendations.
           </div>
           <div class="hero-flow">
             <span class="flow-step">Tag Creative</span><span class="flow-arrow">→</span>
@@ -66,7 +67,7 @@ with st.sidebar:
         [
             "Overview",
             "Portfolio Balance",
-            "Message Territories",
+            "Creative Territories",
             "Creative Roles",
             "Formats + Channels",
             "Fatigue Watchlist",
@@ -100,7 +101,7 @@ if page == "Overview":
             with column:
                 render_kpi_card(label, formatter(scorecard.get(key)), accent)
     render_insight_card(
-        "Media reporting tells us what happened in-platform. This layer translates those signals into creative implications: which territories are working, which roles are missing, which formats need refresh, and what to make next.",
+        "This sample shows how the selected creative territories can be measured, compared, refreshed, and translated into next-test recommendations.",
         title="How to read this",
         tone="info",
     )
@@ -117,24 +118,24 @@ elif page == "Portfolio Balance":
     with left:
         render_bar_chart(role_mix, "role", "spend", "Spend by creative role")
     with right:
-        render_bar_chart(territories, "territory", "spend", "Spend by message territory")
+        render_bar_chart(territories, "territory", "spend", "Spend by creative territory")
     for insight in portfolio_insights(role_mix, territories):
         render_insight_card(insight, tone="warning")
     render_section_header("Balance Readout", "A planning view of concentrated and underrepresented portfolio segments.", "Production planning")
     safe_table(workbook.get("report_portfolio_balance"), "report_portfolio_balance")
     render_recommendation_card(
-        "Rebalance around proven signals",
-        "Build timely Drop Into The Moment variants, version Don’t Just Play — Perform by buyer segment, and pair proof-heavy creative with stronger creative excellence hooks.",
+        "Develop the selected territories",
+        "Build timely Drop Into The Moment variants and version Don’t Just Play — Perform by buyer segment, format, and funnel role.",
     )
 
-elif page == "Message Territories":
+elif page == "Creative Territories":
     render_section_header(
-        "Message Territories",
-        "Rank the narratives earning attention and identify where to scale, refresh, or improve the next step.",
-        "Narrative performance",
+        "Creative Territories",
+        "Compare the two selected creative territories and identify where to scale, refresh, or improve the next step.",
+        "Territory performance",
     )
-    territory_columns = st.columns(3)
-    for index, (territory, definition) in enumerate(MESSAGE_TERRITORIES.items()):
+    territory_columns = st.columns(2)
+    for index, (territory, definition) in enumerate(CREATIVE_TERRITORIES.items()):
         with territory_columns[index]:
             render_definition_card(territory, definition, CHART_COLORS[index])
     data = workbook.get("report_territory_analysis").copy()
@@ -171,7 +172,7 @@ elif page == "Creative Roles":
 elif page == "Formats + Channels":
     render_section_header(
         "Formats + Channels",
-        "Connect format performance to the role each channel can play in the creative system.",
+        "Compare territory-specific and shared formats, then connect performance to the role each channel can play.",
         "Activation coverage",
     )
     formats = workbook.get("report_format_analysis")

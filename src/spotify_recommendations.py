@@ -7,7 +7,7 @@ def portfolio_insights(role_mix: pd.DataFrame, territories: pd.DataFrame) -> lis
     insights = []
     for frame, label, column in [
         (role_mix, "creative role", "role"),
-        (territories, "message territory", "territory"),
+        (territories, "creative territory", "territory"),
     ]:
         if frame.empty or "spend" not in frame or column not in frame:
             continue
@@ -16,15 +16,18 @@ def portfolio_insights(role_mix: pd.DataFrame, territories: pd.DataFrame) -> lis
             leader = frame.loc[frame["spend"].idxmax()]
             share = leader["spend"] / total
             if share > 0.5:
-                insights.append(
-                    f"{leader[column]} represents {share:.0%} of {label} spend. Build adjacent variants and diversify coverage."
+                action = (
+                    "Rebalance production volume across the two selected territories."
+                    if column == "territory"
+                    else "Add underrepresented roles within the selected territories."
                 )
+                insights.append(f"{leader[column]} represents {share:.0%} of {label} spend. {action}")
     present = set(role_mix.get("role", pd.Series(dtype=str)).dropna())
     missing = [role for role in REQUIRED_ROLES if role not in present]
     if missing:
         insights.append(f"Missing role coverage: {', '.join(missing)}. Add underrepresented roles.")
     if not insights:
-        insights.append("Coverage is reasonably balanced. Keep building adjacent variants around winning territories.")
+        insights.append("Coverage is balanced across the two selected creative territories. Continue testing variants within each.")
     return insights
 
 
@@ -33,8 +36,6 @@ def territory_signal(row: pd.Series, median_ctr: float, median_spend: float) -> 
     spend = row.get("spend", 0) or 0
     conversions = row.get("conversions", 0) or 0
     territory = row.get("territory", "")
-    if territory == "Proof & Performance" and spend > median_spend:
-        return "Pair performance proof points with stronger creative excellence hooks."
     if territory == "Drop Into The Moment" and ctr >= median_ctr:
         return "Build a new Breaking Drop variant for a timely fandom or industry moment."
     if territory == "Don’t Just Play — Perform" and ctr >= median_ctr:
@@ -66,8 +67,6 @@ def fatigue_flags(frame: pd.DataFrame) -> pd.DataFrame:
             return "Build a new Breaking Drop variant for a timely fandom or industry moment"
         if row["fatigue_flag"] and territory == "Don’t Just Play — Perform":
             return "Version the creative excellence hook by buyer segment"
-        if row["fatigue_flag"] and territory == "Proof & Performance":
-            return "Pair the proof point with a stronger creative excellence hook"
         if row["spend_efficiency_flag"] and role == "Action / Conversion":
             return "Add a clearer next step to the selected territory"
         if row["fatigue_flag"]:

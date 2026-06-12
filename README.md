@@ -1,10 +1,10 @@
 # Spotify Advertising Paid Creative Intelligence
 
-A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence pitch. It is a creative diagnostics and production-planning tool that translates paid media signals into decisions about message territories, creative roles, formats, channels, fatigue, and next tests.
+A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence pitch. It is a creative diagnostics and production-planning tool that translates paid media signals into decisions about creative territories, creative roles, formats, channels, fatigue, and next tests.
 
 This sample complements media agency reporting; it does not replace it. The app reads from a structured Google Sheet when credentials are configured and falls back to matching CSV files in `data/sample_exports/`. Source identifiers and connector details are never shown in the UI.
 
-The illustrative taxonomy foregrounds the WIP creative territories **Drop Into The Moment** and **Don’t Just Play — Perform**, with **Proof & Performance** as a supporting territory. Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
+The illustrative taxonomy uses only the selected WIP creative territories **Drop Into The Moment** and **Don’t Just Play — Perform**. Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
 
 ## Run locally
 
@@ -24,8 +24,8 @@ Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing t
 ## What it covers
 
 - Overview scorecard
-- Portfolio balance by creative role and message territory
-- Territory, role, format, and channel diagnostics
+- Portfolio balance by creative role and creative territory
+- Creative territory, role, format, and channel diagnostics
 - Fatigue watchlist
 - Next-test recommendations and a creative decision log
 - Data requirements and asset-mapping QA
