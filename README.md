@@ -31,6 +31,18 @@ The password is never stored in the repository. If `app_password` is omitted, lo
 
 Create `.streamlit/secrets.toml` with a `gcp_service_account` table containing the standard Google service-account fields. Share the source workbook with that service account. If credentials or a requested tab are unavailable, the app falls back to demo CSVs or displays a friendly empty state.
 
+## Keeping the demo app awake
+
+The `Keep Streamlit Dashboard Awake` GitHub Actions workflow opens the deployed Streamlit dashboard in a headless Chrome browser on a low-frequency schedule, and it can also be run manually before a pitch or demo. If Streamlit shows a `Wake up app` button, the workflow clicks it and waits briefly for the app to start. If the button is not present, the app is treated as already awake.
+
+Configure the repository variable `STREAMLIT_APP_URLS` with one or more deployed app URLs, separated by commas:
+
+```text
+https://your-dashboard.streamlit.app
+```
+
+To run it manually, open the repository in GitHub, go to **Actions**, choose **Keep Streamlit Dashboard Awake**, and select **Run workflow**. The workflow is intentionally low-frequency, uses wake-only Python dependencies from `requirements-wake.txt`, and does not mutate dashboard data.
+
 ## What it covers
 
 - Creative Role Performance with current-vs-prior role-specific KPI trends
