@@ -62,7 +62,7 @@ CREATIVE_TERRITORIES = {
         "Real-time culture, trending fandoms, and timely advertiser opportunities. "
         "Shows how brands can identify where fandom is building and act on cultural moments with measurable signals."
     ),
-    "Don’t Just Play — Perform": (
+    "Don't just perform. Play.": (
         "Creative excellence plus measurable performance. Brings artistry and impact together in a category "
         "often dominated by functionality, metrics, and data."
     ),

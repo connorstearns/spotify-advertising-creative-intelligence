@@ -108,7 +108,7 @@ def territory_signal(row: pd.Series, median_ctr: float, median_spend: float) -> 
     territory = row.get("territory", "")
     if territory == "Drop Into The Moment" and ctr >= median_ctr:
         return "Build a new Breaking Drop variant for a timely fandom or industry moment."
-    if territory == "Don’t Just Play — Perform" and ctr >= median_ctr:
+    if territory == "Don't just perform. Play." and ctr >= median_ctr:
         return "Version “Play with Creative. Perform with numbers.” by buyer segment."
     if ctr >= median_ctr and conversions <= 1:
         return "Interest is strong; strengthen the next step and conversion path."
@@ -135,7 +135,7 @@ def fatigue_flags(frame: pd.DataFrame) -> pd.DataFrame:
         role = row.get("role", "")
         if row["fatigue_flag"] and territory == "Drop Into The Moment":
             return "Build a new Breaking Drop variant for a timely fandom or industry moment"
-        if row["fatigue_flag"] and territory == "Don’t Just Play — Perform":
+        if row["fatigue_flag"] and territory == "Don't just perform. Play.":
             return "Version the creative excellence hook by buyer segment"
         if row["spend_efficiency_flag"] and role == "Action / Conversion":
             return "Add a clearer next step to the selected territory"
