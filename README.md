@@ -4,7 +4,7 @@ A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence 
 
 This sample complements media agency reporting; it does not replace it. The app reads named tabs from a structured Google Sheet when credentials are configured and falls back to matching CSV files in `data/sample_exports/`. Source identifiers and connector details are never shown in the UI.
 
-The illustrative taxonomy uses only the selected WIP creative territories **Drop Into The Moment** and **Don’t Just Play — Perform**. Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
+The illustrative taxonomy uses only the selected WIP creative territories **Drop Into The Moment** and **Don't just perform. Play.** Their language is used as planning metadata, sample asset naming, and next-test prompts rather than as an official campaign or creative gallery.
 
 ## Run locally
 

@@ -7,7 +7,7 @@ SAMPLE_DIR = Path(__file__).resolve().parents[1] / "data" / "sample_exports"
 
 SELECTED_TERRITORIES = {
     "Drop Into The Moment",
-    "Don’t Just Play — Perform",
+    "Don't just perform. Play.",
 }
 
 EXPECTED_FORMATS = {
