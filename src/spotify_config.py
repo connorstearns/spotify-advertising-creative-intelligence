@@ -1,6 +1,6 @@
 from pathlib import Path
 
-APP_TITLE = "Spotify Advertising Paid Creative Intelligence"
+APP_TITLE = "Spotify Advertising Creative Intelligence"
 SHEET_ID = "1XCLBJmHPR-ACqxwMgpqX9p23iw3vRiWnoLQJTnkO2AQ"
 SAMPLE_DIR = Path(__file__).resolve().parents[1] / "data" / "sample_exports"
 

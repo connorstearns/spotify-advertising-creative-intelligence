@@ -54,7 +54,7 @@ def require_demo_access(secrets: Mapping, session_state: MutableMapping) -> bool
             """
             <div class="access-panel">
               <div class="eyebrow">Access-controlled demo</div>
-              <div class="access-title">Spotify Advertising Paid Creative Intelligence</div>
+              <div class="access-title">Spotify Advertising Creative Intelligence</div>
               <div class="access-copy">Enter the demo password to view the sample dashboard.</div>
             </div>
             """,
@@ -73,4 +73,3 @@ def require_demo_access(secrets: Mapping, session_state: MutableMapping) -> bool
                 st.rerun()
             st.error("That password is not valid.")
     return False
-

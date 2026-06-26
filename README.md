@@ -1,4 +1,4 @@
-# Spotify Advertising Paid Creative Intelligence
+# Spotify Advertising Creative Intelligence
 
 A demo Streamlit dashboard for a Spotify Advertising paid creative intelligence pitch. It is a creative diagnostics and production-planning tool that translates paid media signals into decisions about creative roles, territories, formats, channels, trends, fatigue, and next tests.
 
