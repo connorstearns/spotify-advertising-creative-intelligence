@@ -2,7 +2,13 @@ import re
 
 import pandas as pd
 
-from src.spotify_config import NUMERIC_COLUMNS
+from src.spotify_config import CREATIVE_PERFORMANCE_TERRITORY, NUMERIC_COLUMNS
+
+
+OLD_CREATIVE_PERFORMANCE_PATTERN = re.compile(
+    r"\bdo?n[’']t\s+just\s+play\s*(?:—|–|-|\.)\s*perform\.?",
+    re.IGNORECASE,
+)
 
 
 def snake_case(value: object) -> str:
@@ -39,6 +45,8 @@ def normalize_frame(frame: pd.DataFrame, headerless: bool = False) -> pd.DataFra
         data.columns = [snake_case(column) for column in data.columns]
     data = data.loc[:, [column for column in data.columns if column and not column.startswith("unnamed")]]
     data = data.dropna(how="all").reset_index(drop=True)
+    for column in data.select_dtypes(include="object").columns:
+        data[column] = data[column].apply(normalize_copy_text)
     for column in set(data.columns) & NUMERIC_COLUMNS:
         cleaned = (
             data[column]
@@ -55,6 +63,12 @@ def normalize_frame(frame: pd.DataFrame, headerless: bool = False) -> pd.DataFra
     return data
 
 
+def normalize_copy_text(value: object) -> object:
+    if not isinstance(value, str):
+        return value
+    return OLD_CREATIVE_PERFORMANCE_PATTERN.sub(CREATIVE_PERFORMANCE_TERRITORY, value)
+
+
 def scorecard_dict(frame: pd.DataFrame) -> dict[str, float]:
     if frame.empty:
         return {}
@@ -67,4 +81,3 @@ def scorecard_dict(frame: pd.DataFrame) -> dict[str, float]:
             for _, row in frame.iterrows()
         }
     return frame.iloc[0].to_dict()
-
