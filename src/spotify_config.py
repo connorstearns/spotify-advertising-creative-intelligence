@@ -3,6 +3,7 @@ from pathlib import Path
 APP_TITLE = "Spotify Advertising Creative Intelligence"
 SHEET_ID = "1XCLBJmHPR-ACqxwMgpqX9p23iw3vRiWnoLQJTnkO2AQ"
 SAMPLE_DIR = Path(__file__).resolve().parents[1] / "data" / "sample_exports"
+CREATIVE_PERFORMANCE_TERRITORY = "Don't just perform. Play."
 
 TABS = [
     "pitch_demo_summary",
@@ -62,7 +63,7 @@ CREATIVE_TERRITORIES = {
         "Real-time culture, trending fandoms, and timely advertiser opportunities. "
         "Shows how brands can identify where fandom is building and act on cultural moments with measurable signals."
     ),
-    "Don't just perform. Play.": (
+    CREATIVE_PERFORMANCE_TERRITORY: (
         "Creative excellence plus measurable performance. Brings artistry and impact together in a category "
         "often dominated by functionality, metrics, and data."
     ),
